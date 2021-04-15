@@ -1,4 +1,7 @@
+创建.env 配置数据库
 composer install
 php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
-php artisan admin:install
 php artisan migrate
+php artisan key:generate
+php artisan serve
+访问 http://127.0.0.1:8000/admin/auth/login

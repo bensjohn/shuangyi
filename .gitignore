@@ -15,3 +15,4 @@ yarn-error.log
 composer.lock
 public/vendor/
 storage/logs/
+.idea/
