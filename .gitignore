@@ -16,3 +16,4 @@ composer.lock
 public/vendor/
 storage/logs/
 .idea/
+public/

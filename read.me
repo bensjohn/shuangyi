@@ -3,5 +3,7 @@ composer install
 php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
 php artisan migrate
 php artisan key:generate
-php artisan serve
-访问 http://127.0.0.1:8000/admin/auth/login
+php artisan serve --port 80
+php artisan storage:link
+
+访问 http://127.0.0.1/admin/auth/login
