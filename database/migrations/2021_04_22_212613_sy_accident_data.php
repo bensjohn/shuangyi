@@ -15,18 +15,18 @@ class SyAccidentData extends Migration
     {
         Schema::create('sy_accidentData', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('事故记录');
-            $table->integer('carID')->index()->comment('事故车辆编号');
-            $table->integer('accidentManagerID')->index()->comment('事故负责人ID 员工ID');
-            $table->integer('insureID')->index()->comment('保险编号');
+            $table->integer('carID')->nullable()->default(0)->index()->comment('事故车辆编号');
+            $table->integer('accidentManagerID')->nullable()->default(0)->index()->comment('事故负责人ID 员工ID');
+            $table->integer('insureID')->nullable()->default(0)->index()->comment('保险编号');
 
-            $table->string('accidentDate')->nullable()->comment('事故时间');
-            $table->string('accidentAddress')->nullable()->comment('事故地点');
-            $table->string('dealDate')->nullable()->comment('处理时间');
-            $table->string('accidentReason')->nullable()->comment('事故原因');
-            $table->string('remark')->nullable()->comment('备注');
+            $table->string('accidentDate')->nullable()->default('')->comment('事故时间');
+            $table->string('accidentAddress')->nullable()->default('')->comment('事故地点');
+            $table->string('dealDate')->nullable()->default('')->comment('处理时间');
+            $table->string('accidentReason')->nullable()->default('')->comment('事故原因');
+            $table->string('remark')->nullable()->default('')->comment('备注');
 
-            $table->integer('create_by')->nullable()->comment('创建人');
-            $table->integer('update_by')->nullable()->comment('修改人');
+            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
+            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });

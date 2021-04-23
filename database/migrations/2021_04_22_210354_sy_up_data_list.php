@@ -15,20 +15,20 @@ class SyUpDataList extends Migration
     {
         Schema::create('sy_upDataList', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('上游记录');;
-            $table->string('upperName')->nullable()->index()->comment('上游名称');
-            $table->string('upAccidentName')->nullable()->comment('上游事故负责人');
-            $table->string('upAccidentTel')->nullable()->comment('上游事故负责人电话');
-            $table->string('upRepairName')->nullable()->comment('上游维修负责人');
-            $table->string('upRepairTel')->nullable()->comment('上游维修负责人电话');
-            $table->string('upHealthName')->nullable()->comment('上游保养负责人');
-            $table->string('upHealthTel')->nullable()->comment('上游保养负责人电话');
-            $table->string('upBreakRuleName')->nullable()->comment('上游违章负责人');
-            $table->string('upBreakRuleTel')->nullable()->comment('上游违章负责人电话');
-            $table->string('upCheckName')->nullable()->comment('上游年检负责人');
-            $table->string('upCheckTel')->nullable()->comment('上游年检负责人电话');
+            $table->string('upperName')->nullable()->default('')->index()->comment('上游名称');
+            $table->string('upAccidentName')->nullable()->default('')->comment('上游事故负责人');
+            $table->string('upAccidentTel')->nullable()->default('')->comment('上游事故负责人电话');
+            $table->string('upRepairName')->nullable()->default('')->comment('上游维修负责人');
+            $table->string('upRepairTel')->nullable()->default('')->comment('上游维修负责人电话');
+            $table->string('upHealthName')->nullable()->default('')->comment('上游保养负责人');
+            $table->string('upHealthTel')->nullable()->default('')->comment('上游保养负责人电话');
+            $table->string('upBreakRuleName')->nullable()->default('')->comment('上游违章负责人');
+            $table->string('upBreakRuleTel')->nullable()->default('')->comment('上游违章负责人电话');
+            $table->string('upCheckName')->nullable()->default('')->comment('上游年检负责人');
+            $table->string('upCheckTel')->nullable()->default('')->comment('上游年检负责人电话');
 
-            $table->integer('create_by')->nullable()->comment('创建人');
-            $table->integer('update_by')->nullable()->comment('修改人');
+            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
+            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });
