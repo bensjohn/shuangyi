@@ -12,6 +12,8 @@ class HomeController extends Controller
 {
     public function index(Content $content)
     {
+        return redirect('/admin/users');
+
         return $content
             ->title('Dashboard')
             ->description('Description...')

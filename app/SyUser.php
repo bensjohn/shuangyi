@@ -1,96 +1,108 @@
 <?php
 
-namespace App;
-use Encore\Admin\Auth\Database\HasPermissions;
-use Encore\Admin\Traits\DefaultDatetimeFormat;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
+    namespace App;
 
-/**
- * Class SyUser.
- *
- * @property Role[] $roles
- */
-class SyUser extends Model implements AuthenticatableContract
-{
-    use Authenticatable;
-    use HasPermissions;
-    use DefaultDatetimeFormat;
-    public $table = 'sy_userData';
-    use SoftDeletes;
-
-    protected $fillable = ['username', 'password', 'name', 'avatar'];
+    use Encore\Admin\Auth\Database\HasPermissions;
+    use Encore\Admin\Traits\DefaultDatetimeFormat;
+    use Illuminate\Auth\Authenticatable;
+    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+    use Illuminate\Database\Eloquent\SoftDeletes;
+    use Illuminate\Support\Facades\Storage;
 
     /**
-     * Create a new Eloquent model instance.
+     * Class SyUser.
      *
-     * @param array $attributes
+     * @property Role[] $roles
      */
-    public function __construct(array $attributes = [])
+    class SyUser extends Model implements AuthenticatableContract
     {
-        $connection = config('admin.database.connection') ?: config('database.default');
+        use Authenticatable;
+        use HasPermissions;
+        use DefaultDatetimeFormat;
+        public $table = 'sy_userData';
+        use SoftDeletes;
 
-        $this->setConnection($connection);
+        protected $fillable = ['username', 'password', 'name', 'avatar'];
 
-        $this->setTable(config('admin.database.users_table'));
+        /**
+         * Create a new Eloquent model instance.
+         *
+         * @param array $attributes
+         */
+        public function __construct(array $attributes = [])
+        {
+            $connection = config('admin.database.connection') ?: config('database.default');
 
-        parent::__construct($attributes);
-    }
+            $this->setConnection($connection);
 
-    /**
-     * Get avatar attribute.
-     *
-     * @param string $avatar
-     *
-     * @return string
-     */
-    public function getAvatarAttribute($avatar)
-    {
-        if (url()->isValidUrl($avatar)) {
-            return $avatar;
+            $this->setTable(config('admin.database.users_table'));
+
+            parent::__construct($attributes);
         }
 
-        $disk = config('admin.upload.disk');
+        /**
+         * Get avatar attribute.
+         *
+         * @param string $avatar
+         *
+         * @return string
+         */
+        public function getAvatarAttribute($avatar)
+        {
+            if (url()->isValidUrl($avatar)) {
+                return $avatar;
+            }
 
-        if ($avatar && array_key_exists($disk, config('filesystems.disks'))) {
-            return Storage::disk(config('admin.upload.disk'))->url($avatar);
+            $disk = config('admin.upload.disk');
+
+            if ($avatar && array_key_exists($disk, config('filesystems.disks'))) {
+                return Storage::disk(config('admin.upload.disk'))->url($avatar);
+            }
+
+            $default = config('admin.default_avatar') ?: '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg';
+
+            return admin_asset($default);
         }
 
-        $default = config('admin.default_avatar') ?: '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg';
+        /**
+         * A user has and belongs to many roles.
+         *
+         * @return BelongsToMany
+         */
+        public function roles(): BelongsToMany
+        {
+            $pivotTable = config('admin.database.role_users_table');
 
-        return admin_asset($default);
+            $relatedModel = config('admin.database.roles_model');
+
+            return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'role_id');
+        }
+
+        /**
+         * A User has and belongs to many permissions.
+         *
+         * @return BelongsToMany
+         */
+        public function permissions(): BelongsToMany
+        {
+            $pivotTable = config('admin.database.user_permissions_table');
+
+            $relatedModel = config('admin.database.permissions_model');
+
+            return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
+        }
+
+
+        public function usercreate()
+        {
+            return $this->belongsTo(get_class($this), 'create_by', $this->getKeyName());
+        }
+
+        public function userupdate()
+        {
+            return $this->belongsTo(get_class($this), 'update_by', $this->getKeyName());
+        }
     }
-
-    /**
-     * A user has and belongs to many roles.
-     *
-     * @return BelongsToMany
-     */
-    public function roles(): BelongsToMany
-    {
-        $pivotTable = config('admin.database.role_users_table');
-
-        $relatedModel = config('admin.database.roles_model');
-
-        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'role_id');
-    }
-
-    /**
-     * A User has and belongs to many permissions.
-     *
-     * @return BelongsToMany
-     */
-    public function permissions(): BelongsToMany
-    {
-        $pivotTable = config('admin.database.user_permissions_table');
-
-        $relatedModel = config('admin.database.permissions_model');
-
-        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
-    }
-}
 

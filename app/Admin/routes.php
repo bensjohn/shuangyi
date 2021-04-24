@@ -14,4 +14,6 @@ Route::group([
 
     $router->resource('users', UserController::class);
 
+    $router->resource('up-data-lists', UpDataListController::class);
+
 });

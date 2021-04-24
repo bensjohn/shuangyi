@@ -8,6 +8,8 @@
     use Encore\Admin\Grid;
     use Encore\Admin\Show;
     use Illuminate\Foundation\Auth\AuthenticatesUsers;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Validation\Rule;
 
     class UserController extends AdminController
     {
@@ -80,11 +82,13 @@
                 1 => '有',
             ]);
             $grid->column('lastLoginTime', __('最后一次登录时间'));
+            $grid->column('usercreate.name', __('创建人'));
+            $grid->column('userupdate.name', __('修改人'));
 
             $grid->filter(function ($filter) {
 
                 // 设置created_at字段的范围查询
-                $filter->like('name', 'name');
+                $filter->like('name', '姓名');
             });
 
             $grid->paginate(20);
@@ -121,11 +125,15 @@
             $show->field('lastLoginTime', __('最后一次登录时间'));
             $show->field('isBlackList', __('是否为黑名单'))->using(['0' => '否', 1 => '是']);
             $show->field('remark', __('备注'));
-            $show->field('create_by', __('创建人'));
-            $show->field('update_by', __('修改人'));
+            $show->field('usercreate', __('创建人'))->as(function ($content) {
+                return $content->name;
+            });
+            $show->field('userupdate', __('修改人'))->as(function ($content) {
+                return $content->name;
+            });
+
             $show->field('created_at', __('创建时间'));
             $show->field('updated_at', __('修改时间'));
-
 
             return $show;
         }
@@ -143,18 +151,22 @@
             if ($form->isEditing()) {
                 $form->text('username', __('登录名'))->readonly();
             } else {
-                $form->text('username', __('登录名'))->creationRules(['required', "unique:sy_userdata"],[
+                $name = isset(request()->all()['name']) ? request()->all()['name'] : '';
+                $form->text('username', __('登录名'))->creationRules(['required', Rule::unique('sy_userdata')
+                ->where(function ($query)use($name){
+                    return $query->where(['username' =>$name,'deleted_at'=>0]);
+                })], [
                     'required' => '登录名必填',
-                    'unique' => '登录名重复',
+                    'unique'   => '登录名重复',
                 ]);
             }
             if ($form->isEditing()) {
 
             } else {
-                $form->password('password', __('密码'))->rules('confirmed|required',[
+                $form->password('password', __('密码'))->rules('confirmed|required', [
                     'required' => '密码必填',
-]);
-                $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required',[
+                ]);
+                $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required', [
                     'required' => '确认密码必填',
                 ])->default(function ($form) {
                     return $form->model()->password;
@@ -185,6 +197,8 @@
 
             $form->switch('isBlackList', __('是否为黑名单'));
             $form->textarea('remark', __('备注'));
+            $form->hidden('create_by');
+            $form->hidden('update_by');
             $form->footer(function ($footer) {
 
                 // 去掉`查看`checkbox
@@ -202,6 +216,13 @@
                 if ($form->password && $form->model()->password != $form->password) {
                     $form->password = bcrypt($form->password);
                 }
+
+                if ($form->isCreating()) {
+                    $form->create_by = LOGIN_UID;
+                }
+
+                $form->update_by = LOGIN_UID;
+
             });
 
             return $form;

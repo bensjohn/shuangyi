@@ -25,7 +25,7 @@ class CreateAdminTables extends Migration
             $table->bigIncrements('id')->comment('人员基本信息');
 
             $table->string('name')->index()->nullable()->comment('姓名');
-            $table->string('username')->unique()->index()->nullable()->comment('登录名');
+            $table->string('username')->index()->nullable()->comment('登录名');
             $table->string('password')->index()->nullable()->comment('密码');
             $table->string('avatar')->index()->nullable()->comment('头像');
             $table->string('remember_token')->index()->nullable()->comment('token');

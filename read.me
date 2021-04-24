@@ -1,3 +1,4 @@
+*快速开始步骤 基于 "php": "^7.2" "encore/laravel-admin": "^1.7"
 创建.env 配置数据库
 composer install
 php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
@@ -7,3 +8,16 @@ php artisan serve --port 80
 php artisan storage:link
 
 访问 http://127.0.0.1/admin/auth/login
+
+*修改配置文件不生效，可以执行
+php artisan config:cache
+
+*创建数据表结构和模型
+php artisan make:model UpDataList
+php artisan admin:make UpDataListController --model=App\UpDataList
+成功执行第二步后会提示
+【Add the following route to app/Admin/routes.php:
+    $router->resource('up-data-lists', UpDataListController::class);】
+按提示将
+【$router->resource('up-data-lists', UpDataListController::class); 】
+添加到【app/Admin/routes.php】 的【Route::group】中
