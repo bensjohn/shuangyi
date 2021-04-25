@@ -16,4 +16,6 @@ Route::group([
 
     $router->resource('up-data-lists', UpDataListController::class);
 
+    $router->resource('car-class-datas', carClassDataController::class);
+
 });

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Observers\SyUserObserver;
+use App\SyUser;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema; //add fixed sql
 
@@ -24,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
     }
 }

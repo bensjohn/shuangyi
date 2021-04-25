@@ -25,8 +25,8 @@ class SyBreakRuleData extends Migration
             $table->string('dealClass')->nullable()->default('')->default('')->comment('处理方式 1公司处理2驾驶人处理');
             $table->string('remark')->nullable()->default('')->default('')->comment('备注');
 
-            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
-            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
+            $table->integer('create_by')->nullable()->comment('创建人');
+            $table->integer('update_by')->nullable()->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });

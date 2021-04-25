@@ -9,6 +9,15 @@ php artisan storage:link
 
 访问 http://127.0.0.1/admin/auth/login
 
+*项目中删除定义为软删除，在进行软删除时不会更新修改人字段，如果想要解决该问题，需要修改
+【vendor\laravel\framework\src\Illuminate\Database\Eloquent\SoftDeletes.php】
+中的
+【runSoftDelete()】
+方法，在
+【$query->update($columns);】
+之前加上
+【$columns['update_by'] = LOGIN_UID;】
+
 *修改配置文件不生效，可以执行
 php artisan config:cache
 
@@ -21,3 +30,4 @@ php artisan admin:make UpDataListController --model=App\UpDataList
 按提示将
 【$router->resource('up-data-lists', UpDataListController::class); 】
 添加到【app/Admin/routes.php】 的【Route::group】中
+【up-data-lists】即为菜单uri

@@ -17,7 +17,9 @@ class ConstantInit
      */
     public function handle($request, Closure $next)
     {
-        define('LOGIN_UID',Admin::user()->id);
+        if (Admin::user()){
+            define('LOGIN_UID',Admin::user()->id);
+        }
         return $next($request);
     }
 }

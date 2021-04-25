@@ -32,8 +32,8 @@ class SyHireData extends Migration
             $table->string('agentTime')->nullable()->default('')->comment('经办时间');
             $table->string('remark')->nullable()->default('')->comment('备注');
 
-            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
-            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
+            $table->integer('create_by')->nullable()->comment('创建人');
+            $table->integer('update_by')->nullable()->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });

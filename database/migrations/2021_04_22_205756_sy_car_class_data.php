@@ -24,8 +24,8 @@ class SyCarClassData extends Migration
             $table->string('carClass')->nullable()->default('')->comment('车辆类型');
             $table->string('carColor')->nullable()->default('')->comment('车辆颜色');
             $table->string('status')->nullable()->default('')->comment('车辆使用性质 1营运2非营运3租赁');
-            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
-            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
+            $table->integer('create_by')->nullable()->comment('创建人');
+            $table->integer('update_by')->nullable()->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });

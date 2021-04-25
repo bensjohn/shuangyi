@@ -25,8 +25,8 @@ class SyInsureData extends Migration
             $table->string('insureClass')->nullable()->default('')->comment('保险类型 1强险2商业险');
             $table->string('remark')->nullable()->default('')->comment('备注');
 
-            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
-            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
+            $table->integer('create_by')->nullable()->comment('创建人');
+            $table->integer('update_by')->nullable()->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -82,8 +82,8 @@
                 1 => '有',
             ]);
             $grid->column('lastLoginTime', __('最后一次登录时间'));
-            $grid->column('usercreate.name', __('创建人'));
-            $grid->column('userupdate.name', __('修改人'));
+            $grid->column('usercreate.name', __('创建人'))->hide();
+            $grid->column('userupdate.name', __('修改人'))->hide();
 
             $grid->filter(function ($filter) {
 
@@ -126,10 +126,10 @@
             $show->field('isBlackList', __('是否为黑名单'))->using(['0' => '否', 1 => '是']);
             $show->field('remark', __('备注'));
             $show->field('usercreate', __('创建人'))->as(function ($content) {
-                return $content->name;
+                return @$content->name;
             });
             $show->field('userupdate', __('修改人'))->as(function ($content) {
-                return $content->name;
+                return @$content->name;
             });
 
             $show->field('created_at', __('创建时间'));
@@ -178,7 +178,7 @@
                 2 => '女',
             ]);
             $form->text('idsNumber', __('身份证号码'));
-            $form->text('tel', __('电话'));
+            $form->mobile('tel', __('电话'));
             $form->text('address', __('家庭地址'));
             $form->select('userType', __('人员类型'))->options([
                 1 => '员工',
@@ -192,8 +192,8 @@
             $form->text('driveType', __('驾驶证类型'));
             $form->text('isManage', __('是否为管理员'));
             $form->text('urgentName', __('紧急联系人姓名'));
-            $form->text('urgentRelation', __('紧急联系人关系'));
-            $form->text('urgentTel', __('紧急联系人电话'));
+            $form->mobile('urgentRelation', __('紧急联系人关系'));
+            $form->mobile('urgentTel', __('紧急联系人电话'));
 
             $form->switch('isBlackList', __('是否为黑名单'));
             $form->textarea('remark', __('备注'));

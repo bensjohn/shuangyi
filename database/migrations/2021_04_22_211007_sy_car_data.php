@@ -28,8 +28,8 @@ class SyCarData extends Migration
             $table->string('keySum')->nullable()->default('')->comment('车钥匙数量');
             $table->string('isSend')->nullable()->default('')->comment('车辆行驶证是否已经发出 1是2否');
 
-            $table->integer('create_by')->nullable()->default(0)->comment('创建人');
-            $table->integer('update_by')->nullable()->default(0)->comment('修改人');
+            $table->integer('create_by')->nullable()->comment('创建人');
+            $table->integer('update_by')->nullable()->comment('修改人');
             $table->timestamps();
             $table->softDeletes();
         });
