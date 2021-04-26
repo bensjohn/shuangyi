@@ -17,7 +17,7 @@
          *
          * @var string
          */
-        protected $title = 'App\UpDataList';
+        protected $title = '上游记录';
 
         /**
          * Make a grid builder.

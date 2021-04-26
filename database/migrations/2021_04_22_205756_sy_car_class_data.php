@@ -15,7 +15,7 @@ class SyCarClassData extends Migration
     {
         Schema::create('sy_carClassData', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('车辆字典');
-            $table->integer('upperID')->index()->comment('上游ID');
+            $table->integer('upperID')->nullable()->index()->comment('上游ID');
             $table->string('carRegisterDate')->nullable()->default('')->default('')->comment('车辆注册日期');
             $table->string('carFactory')->nullable()->default('')->comment('汽车厂家');
             $table->string('carBrand')->nullable()->default('')->comment('车辆品牌');

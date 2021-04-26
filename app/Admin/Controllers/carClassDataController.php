@@ -17,7 +17,7 @@ class carClassDataController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\carClassData';
+    protected $title = '车辆字典';
 
     /**
      * Make a grid builder.
@@ -36,7 +36,21 @@ class carClassDataController extends AdminController
         $grid->column('carModel', __('车辆型号'));
         $grid->column('carClass', __('车辆类型'));
         $grid->column('carColor', __('车辆颜色'));
-        $grid->column('status', __('车辆使用性质'));
+        $grid->column('status', __('车辆使用性质'))->display(function ($text) {
+            $return = '';
+            switch ($text) {
+                case 1 :
+                    $return = '营运';
+                    break;
+                case 2 :
+                    $return = '非营运';
+                    break;
+                case 3 :
+                    $return = '租赁';
+                    break;
+            }
+            return $return;
+        });;
 
 
         $grid->filter(function ($filter) {
@@ -73,7 +87,7 @@ class carClassDataController extends AdminController
         $show->field('carModel', __('车辆型号'));
         $show->field('carClass', __('车辆类型'));
         $show->field('carColor', __('车辆颜色'));
-        $show->field('status', __('车辆使用性质'));
+        $show->field('status', __('车辆使用性质'))->using([1 => '营运', 2 => '非营运',3=>'租赁']);
 
 
         $show->field('usercreate', __('创建人'))->as(function ($content) {
@@ -123,7 +137,11 @@ class carClassDataController extends AdminController
         $form->text('carModel', __('车辆型号'));
         $form->text('carClass', __('车辆类型'));
         $form->text('carColor', __('车辆颜色'));
-        $form->text('status', __('车辆使用性质'));
+        $form->select('status', __('车辆使用性质'))->options([
+            1 => '营运',
+            2 => '非营运',
+            3 => '租赁',
+        ]);
 
 
         $form->footer(function ($footer) {

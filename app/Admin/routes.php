@@ -18,4 +18,13 @@ Route::group([
 
     $router->resource('car-class-datas', carClassDataController::class);
 
+    $router->resource('insure-class-datas', InsureClassDataController::class);
+
+    $router->resource('repair-class-datas', RepairClassDataController::class);
+
+    $router->resource('car-datas', CarDataController::class);
+
+    $router->resource('insure-datas', InsureDataController::class);
+
+
 });
