@@ -28,6 +28,7 @@
             $grid = new Grid(new InsureClassData());
 
             $grid->column('id', __('Id'))->sortable();
+            $grid->column('name', __('保险名称'));
             $grid->column('insureName', __('保险公司名称'));
 
             $grid->column('created_at', __('创建时间'));
@@ -38,7 +39,7 @@
             $grid->filter(function ($filter) {
 
                 // 设置created_at字段的范围查询
-                $filter->like('insureName', '保险公司名称');
+                $filter->like('name', '保险名称');
             });
 
             $grid->paginate(20);
@@ -57,6 +58,7 @@
             $show = new Show(InsureClassData::findOrFail($id));
 
             $show->field('id', __('Id'));
+            $show->field('name', __('保险名称'));
             $show->field('insureName', __('保险公司名称'));
 
             $show->field('usercreate', __('创建人'))->as(function ($content) {
@@ -81,20 +83,22 @@
         {
             $form = new Form(new InsureClassData());
 
-            $name = isset(request()->all()['insureName']) ? request()->all()['insureName'] : '';
+            $name = isset(request()->all()['name']) ? request()->all()['name'] : '';
 
-            $form->text('insureName', __('上游名称'))
+            $form->text('name', __('保险名称'))
                  ->creationRules(['required', Rule::unique('sy_insureClassData')->where(function ($query)use($name){
-                     return $query->where(['insureName' =>$name,'deleted_at'=>null]);
+                     return $query->where(['name' =>$name,'deleted_at'=>null]);
                  })], [
                      'required' => '保险公司名称必填',
                      'unique'   => '保险公司名称重复',
                  ])->updateRules(['required', Rule::unique('sy_insureClassData')->where(function ($query)use($name){
-                    return $query->where(['insureName' =>$name,'deleted_at'=>null]);
+                    return $query->where(['name' =>$name,'deleted_at'=>null]);
                 })->ignore(@request()->route()->parameters()['insure_class_data'])], [
                     'required' => '保险公司名称必填',
                     'unique'   => '保险公司名称重复',
                 ]);
+
+            $form->text('insureName', __('保险公司名称'));
 
             $form->hidden('create_by');
             $form->hidden('update_by');

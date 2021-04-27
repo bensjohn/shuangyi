@@ -15,6 +15,7 @@ class SyInsureClassData extends Migration
     {
         Schema::create('sy_insureClassData', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('保险字典');
+            $table->string('name')->index()->nullable()->default('')->comment('保险名称');
             $table->string('insureName')->index()->nullable()->default('')->comment('保险公司名称');
 
 

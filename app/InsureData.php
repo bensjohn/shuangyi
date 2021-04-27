@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InsureData extends Model
 {
-    public $table = 'sy_insureClassData';
+    public $table = 'sy_insuredata';
     use SoftDeletes;
 
     public function usercreate()
@@ -22,5 +23,17 @@ class InsureData extends Model
     public function InsureClassData()
     {
         return $this->belongsTo(InsureClassData::class, 'insureDataID', $this->getKeyName());
+    }
+
+    public function setInsureFileAttribute($pictures)
+    {
+        if (is_array($pictures)) {
+            $this->attributes['insureFile'] = json_encode($pictures);
+        }
+    }
+
+    public function getInsureFileAttribute($pictures)
+    {
+        return $pictures;
     }
 }
