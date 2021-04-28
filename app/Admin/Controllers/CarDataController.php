@@ -4,11 +4,13 @@ namespace App\Admin\Controllers;
 
 use App\carClassData;
 use App\CarData;
+use App\CarInsure;
 use App\InsureData;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class CarDataController extends AdminController
@@ -131,8 +133,12 @@ class CarDataController extends AdminController
             return @$content->carName;
         });
 
-        $show->field('InsureData', __('保单号'))->as(function ($content) {
-            return @$content->insureNumber;
+        $show->field('InsureDatas', __('保单号'))->as(function ($content) {
+            $return = '';
+            foreach ($content as $v){
+                $return .= $v->insureNumber.';';
+            }
+            return @$return;
         });
 
         $show->field('engineNumber', __('发动机号'));
@@ -229,6 +235,30 @@ class CarDataController extends AdminController
 
             $form->update_by = LOGIN_UID;
 
+            //编辑保单的时候要插一条记录
+            if (!$form->isCreating()){
+
+                if ($form->insureID != $form->model()->insureID){
+                    $carInsure = new CarInsure;
+                    $carInsure -> carID = $form->model()->id;
+                    $carInsure -> insureID = $form->insureID;
+                    $carInsure->create_by = LOGIN_UID;
+                    $carInsure->update_by = LOGIN_UID;
+                    $carInsure -> save();
+                }
+            }
+
+        });
+
+        $form->saved(function (Form $form) {
+            if ($form->isCreating()){
+                    $carInsure = new CarInsure;
+                    $carInsure -> carID = $form->model()->id;
+                    $carInsure -> insureID = $form->model()->insureID;
+                    $carInsure->create_by = LOGIN_UID;
+                    $carInsure->update_by = LOGIN_UID;
+                    $carInsure -> save();
+            }
         });
 
         $form->hidden('create_by');

@@ -30,6 +30,11 @@ class CarData extends Model
         return $this->belongsTo(InsureData::class, 'insureID', $this->getKeyName());
     }
 
+    public function InsureDatas()
+    {
+        return $this->belongsToMany(InsureData::class, 'sy_carinsure', 'carID','insureID');
+    }
+
     public function setXszfileAttribute($value)
     {
         $this->attributes['xszfile'] = implode(',', $value);
