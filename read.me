@@ -31,3 +31,71 @@ php artisan admin:make UpDataListController --model=App\UpDataList
 【$router->resource('up-data-lists', UpDataListController::class); 】
 添加到【app/Admin/routes.php】 的【Route::group】中
 【up-data-lists】即为菜单uri
+
+*图片上传相关 修改php.ini
+打开配置文件php.ini
+
+1、file_uploads = on ;是否允许通过HTTP上传文件的开关。默认为ON即是开
+
+2、upload_max_filesize = 20m ;允许上传文件大小的最大值。默认为2M，
+
+3、post_max_size = 20m ;   指通过表单POST给PHP的所能接收的最大值，包括表单里的所有值。默认为8M，一般地，设置好上述三个参数后，上传<=8M的文件是不成问题，在网络正常的情况下。但如果要上传>8M的大体积文件，只设置上述三项还一定能行的通
+
+4、max_execution_time = 100 ;每个PHP页面运行的最大时间值(秒)，默认30秒max_input_time = 600 ;每个PHP页面接收数据所需的最大时间，默认60秒
+
+5、memory_limit = 20m ;每个PHP页面所吃掉的最大内存，默认8M
+
+
+*组件仅支持单文件预览，不支持多文件预览。需要修改源码
+\vendor\encore\laravel-admin\src\Show\Field.php 中添加方法
+
+public function files($server = '', $download = true)
+    {
+        $field = $this;
+
+        return $this->unescape()->as(function ($files) use ($server, $download, $field) {
+
+            return collect($files)->map(function ($path) use ($server, $download, $field) {
+                $name = basename($path);
+
+                $field->border = false;
+
+                $size = $url = '';
+
+                if (url()->isValidUrl($path)) {
+                    $url = $path;
+                } elseif ($server) {
+                    $url = $server . $path;
+                } else {
+                    $storage = Storage::disk(config('admin.upload.disk'));
+                    if ($storage->exists($path)) {
+                        $url  = $storage->url($path);
+                        $size = ($storage->size($path) / 1000) . 'KB';
+                    }
+                }
+
+                if (!$url) {
+                    return '';
+                }
+
+                $download = $download ? "download='$name'" : '';
+
+                return <<<HTML
+<ul class="mailbox-attachments clearfix">
+    <li style="margin-bottom: 0;">
+      <span class="mailbox-attachment-icon"><i class="fa {$field->getFileIcon($name)}"></i></span>
+      <div class="mailbox-attachment-info">
+        <div class="mailbox-attachment-name">
+            <i class="fa fa-paperclip"></i> {$name}
+            </div>
+            <span class="mailbox-attachment-size">
+              {$size}&nbsp;
+              <a href="{$url}" class="btn btn-default btn-xs pull-right" target="_blank" $download><i class="fa fa-cloud-download"></i></a>
+            </span>
+      </div>
+    </li>
+  </ul>
+HTML;
+            })->implode('&nbsp;');
+        });
+    }

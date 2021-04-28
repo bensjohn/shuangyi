@@ -21,10 +21,10 @@ class SyInsureData extends Migration
             $table->string('insureEndDate')->index()->nullable()->default('')->comment('保险停保时间');
             $table->string('state')->nullable()->default('')->comment('状态 1在保2脱保3续保');
             $table->string('insureCost')->nullable()->default('')->comment('保险费用');
-            $table->string('insureImage')->nullable()->default('')->comment('保险图片');
-            $table->string('insureFile')->nullable()->default('')->comment('保险文件');
+            $table->longText('insureimage')->nullable()->comment('保险图片');
+            $table->longText('insurefile')->nullable()->comment('保险文件');
             $table->string('insureClass')->nullable()->default('')->comment('保险类型 1强险2商业险');
-            $table->string('remark')->nullable()->default('')->comment('备注');
+            $table->longText('remark')->nullable()->comment('备注');
 
             $table->integer('create_by')->nullable()->comment('创建人');
             $table->integer('update_by')->nullable()->comment('修改人');

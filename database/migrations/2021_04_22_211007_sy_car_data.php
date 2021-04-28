@@ -15,7 +15,8 @@ class SyCarData extends Migration
     {
         Schema::create('sy_carData', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('车辆基本信息');
-            $table->integer('carClassID')->nullable()->default(0)->comment('车辆字典ID');
+            $table->integer('carClassID')->index()->nullable()->default(0)->comment('车辆字典ID');
+            $table->integer('insureID')->index()->nullable()->default(0)->comment('保险序号');
             $table->string('carNumber')->nullable()->default('')->comment('车牌号');
             $table->string('engineNumber')->nullable()->default('')->comment('发动机号');
             $table->string('carFrameNumber')->nullable()->default('')->comment('车架号');
@@ -26,6 +27,10 @@ class SyCarData extends Migration
             $table->string('yearCheckDate')->nullable()->default('')->comment('年检日期');
             $table->string('keySum')->nullable()->default('')->comment('车钥匙数量');
             $table->string('isSend')->nullable()->default('')->comment('车辆行驶证是否已经发出 1是2否');
+            $table->longText('xszfile')->nullable()->comment('行驶证照片');
+
+            $table->longText('carfile')->nullable()->comment('车辆照片');
+            $table->longText('remark')->nullable()->comment('备注');
 
             $table->integer('create_by')->nullable()->comment('创建人');
             $table->integer('update_by')->nullable()->comment('修改人');

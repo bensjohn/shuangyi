@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CarData extends Model
 {
@@ -24,8 +25,28 @@ class CarData extends Model
         return $this->belongsTo(carClassData::class, 'carClassID', $this->getKeyName());
     }
 
-    public function InsureClassData()
+    public function InsureData()
     {
-        return $this->belongsTo(InsureClassData::class, 'insureID', $this->getKeyName());
+        return $this->belongsTo(InsureData::class, 'insureID', $this->getKeyName());
+    }
+
+    public function setXszfileAttribute($value)
+    {
+        $this->attributes['xszfile'] = implode(',', $value);
+    }
+
+    public function getXszfileAttribute($value)
+    {
+        return explode(',', $value);
+    }
+
+    public function setCarfileAttribute($value)
+    {
+        $this->attributes['carfile'] = implode(',', $value);
+    }
+
+    public function getCarfileAttribute($value)
+    {
+        return explode(',', $value);
     }
 }

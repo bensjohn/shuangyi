@@ -25,15 +25,23 @@ class InsureData extends Model
         return $this->belongsTo(InsureClassData::class, 'insureDataID', $this->getKeyName());
     }
 
-    public function setInsureFileAttribute($pictures)
+    public function setInsureimageAttribute($value)
     {
-        if (is_array($pictures)) {
-            $this->attributes['insureFile'] = json_encode($pictures);
-        }
+        $this->attributes['insureimage'] = implode(',', $value);
     }
 
-    public function getInsureFileAttribute($pictures)
+    public function getInsureimageAttribute($value)
     {
-        return $pictures;
+        return explode(',', $value);
+    }
+
+    public function setInsurefileAttribute($value)
+    {
+            $this->attributes['insurefile'] = implode(',', $value);
+    }
+
+    public function getInsurefileAttribute($value)
+    {
+        return explode(',', $value);
     }
 }

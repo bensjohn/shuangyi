@@ -56,7 +56,7 @@ class InsureDataController extends AdminController
             $filter->like('InsureClassData.name', '保险字典名称');
         });
 
-        $grid->column('remark', __('创建人'))->备注();
+        $grid->column('remark', __('备注'))->hide();
         $grid->column('usercreate.name', __('创建人'))->hide();
         $grid->column('userupdate.name', __('修改人'))->hide();
         $grid->paginate(20);
@@ -85,13 +85,8 @@ class InsureDataController extends AdminController
         $show->field('insureCost', __('保险费用'));
         $show->field('insureClass', __('保险类型'))->using(['1'=>'强险',2=>'商业险']);
         $show->field('remark', __('备注'));
-        $show->insureFile( __('保险文件和图片'))->as(function ($content) {
-            $img = '';
-            foreach (json_decode($content,true) as $v){
-                $img .= public_path('/uploads/'.$v);
-            }
-            return $img;
-        })->image();
+        $show->field( 'insureimage',__('保险图片'))->image();
+        $show->field( 'insurefile',__('保险文件'))->files();
 
         $show->field('usercreate', __('创建人'))->as(function ($content) {
             return @$content->name;
@@ -141,7 +136,10 @@ class InsureDataController extends AdminController
         $form->text('insureCost', __('保险费用'));
         $form->select('insureClass', __('保险类型'))->options(['1'=>'强险',2=>'商业险']);
         $form->text('remark', __('备注'));
-        $form->multipleFile('insureFile', __('保险文件或者图片'))->removable()->retainable();
+
+        $form->multipleImage('insureimage', __('保险图片'))->removable()->retainable()->sortable()->uniqueName();
+
+        $form->multipleFile('insurefile', __('保险文件'))->removable()->retainable()->sortable()->uniqueName();
 
         $form->footer(function ($footer) {
 
