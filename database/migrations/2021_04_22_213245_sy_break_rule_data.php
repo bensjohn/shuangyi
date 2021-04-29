@@ -19,6 +19,10 @@ class SyBreakRuleData extends Migration
             $table->integer('userID')->nullable()->default(0)->index()->comment('司机编号 用户ID');
             $table->integer('dealID')->nullable()->default(0)->index()->comment('经办人ID 用户ID');
 
+            $table->longText('breakrulecontent')->nullable()->comment('违章内容(图片)');
+            $table->longText('breakpicture')->nullable()->comment('违章处理截图');
+
+
             $table->string('dealDate')->nullable()->default('')->default('')->comment('经办时间');
             $table->string('reduceGrade')->nullable()->default('')->default('')->comment('扣分数');
             $table->string('fineCost')->nullable()->default('')->default('')->comment('罚款费用');

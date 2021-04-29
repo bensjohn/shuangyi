@@ -11,6 +11,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('admin.home');
+    $router->resource('repair-datas', RepairDataController::class);
 
     $router->resource('users', UserController::class);
 
@@ -25,6 +26,14 @@ Route::group([
     $router->resource('car-datas', CarDataController::class);
 
     $router->resource('insure-datas', InsureDataController::class);
+
+    $router->resource('accident-datas', AccidentDataController::class);
+
+    $router->resource('health-datas', HealthDataController::class);
+
+    $router->resource('break-rule-datas', BreakRuleDataController::class);
+
+    $router->resource('hire-datas', HireDataController::class);
 
 
 });

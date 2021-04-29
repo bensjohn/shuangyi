@@ -28,9 +28,12 @@ class SyRepairData extends Migration
             $table->string('repairContent')->nullable()->default('')->comment('维修内容');
             $table->string('materialCost')->nullable()->default('')->comment('材料费');
             $table->string('peopleCost')->nullable()->default('')->comment('人工费');
+            $table->longText('repairfile')->nullable()->comment('维修文件');
+            $table->longText('repairimage')->nullable()->comment('维修照片');
             $table->string('otherCost')->nullable()->default('')->comment('其他费用');
             $table->string('totalCost')->nullable()->default('')->comment('总计费用');
             $table->string('leaveFactoryDate')->nullable()->default('')->comment('预计出厂时间');
+            $table->string('remark')->nullable()->default('')->comment('备注');
 
 
              $table->integer('create_by')->nullable()->comment('创建人');

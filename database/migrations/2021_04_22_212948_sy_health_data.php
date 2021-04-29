@@ -18,6 +18,7 @@ class SyHealthData extends Migration
             $table->integer('carID')->nullable()->default(0)->index()->comment('车辆编号');
             $table->integer('userID')->nullable()->default(0)->index()->comment('司机编号 用户ID');
 
+            $table->longText('mileagefile')->nullable()->comment('里程数照片');
             $table->string('healthContent')->nullable()->default('')->comment('保养内容');
             $table->string('payer')->nullable()->default('')->comment('付款方 1上游支付2公司自费');
             $table->string('healthCost')->nullable()->default('')->comment('保养费用');
