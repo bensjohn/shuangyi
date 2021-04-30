@@ -25,9 +25,9 @@ class RepairData extends Model
         return $this->belongsTo(CarData::class, 'carID', $this->getKeyName());
     }
 
-    public function userid_()
+    public function giveCarid_()
     {
-        return $this->belongsTo(SyUser::class, 'userID', $this->getKeyName());
+        return $this->belongsTo(SyUser::class, 'giveCarID', $this->getKeyName());
     }
 
     public function repairClassData()
