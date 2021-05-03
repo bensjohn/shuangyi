@@ -37,21 +37,25 @@ class RepairData extends Model
 
     public function setRepairimageAttribute($value)
     {
-        $this->attributes['repairimage'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['repairimage'] = json_encode($value);
+        }
     }
 
     public function getRepairimageAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode($value,true);
     }
 
     public function setRepairfileAttribute($value)
     {
-        $this->attributes['repairfile'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['repairfile'] = json_encode($value);
+        }
     }
 
     public function getRepairfileAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode($value,true);
     }
 }

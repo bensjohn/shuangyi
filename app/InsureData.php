@@ -27,21 +27,25 @@ class InsureData extends Model
 
     public function setInsureimageAttribute($value)
     {
-        $this->attributes['insureimage'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['insureimage'] = json_encode($value);
+        }
     }
 
     public function getInsureimageAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode ($value,true);
     }
 
     public function setInsurefileAttribute($value)
     {
-            $this->attributes['insurefile'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['insurefile'] = json_encode($value);
+        }
     }
 
     public function getInsurefileAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode ($value,true);
     }
 }

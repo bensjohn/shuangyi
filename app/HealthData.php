@@ -32,11 +32,13 @@
 
         public function setMileagefileAttribute($value)
         {
-            $this->attributes['mileagefile'] = implode(',', $value);
+            if (is_array($value)){
+                $this->attributes['mileagefile'] = json_encode($value);
+            }
         }
 
         public function getMileagefileAttribute($value)
         {
-            return explode(',', $value);
+            return json_decode($value, true);
         }
     }

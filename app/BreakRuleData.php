@@ -37,21 +37,25 @@ class BreakRuleData extends Model
 
     public function setBreakrulecontentAttribute($value)
     {
-        $this->attributes['breakrulecontent'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['breakrulecontent'] = json_encode($value);
+        }
     }
 
     public function getBreakrulecontentAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode($value, true);
     }
 
     public function setBreakpictureAttribute($value)
     {
-        $this->attributes['breakpicture'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['breakrulecontent'] = json_encode($value);
+        }
     }
 
     public function getBreakpictureAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode($value, true);
     }
 }

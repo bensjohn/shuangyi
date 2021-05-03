@@ -37,21 +37,25 @@ class CarData extends Model
 
     public function setXszfileAttribute($value)
     {
-        $this->attributes['xszfile'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['xszfile'] = json_encode($value);
+        }
     }
 
     public function getXszfileAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode( $value,true);
     }
 
     public function setCarfileAttribute($value)
     {
-        $this->attributes['carfile'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['carfile'] = json_encode($value);
+        }
     }
 
     public function getCarfileAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode( $value,true);
     }
 }

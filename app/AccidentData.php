@@ -42,21 +42,25 @@ class AccidentData extends Model
 
     public function setSpotimageAttribute($value)
     {
-        $this->attributes['spotimage'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['spotimage'] = json_encode($value);
+        }
     }
 
     public function getSpotimageAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode($value, true);
     }
 
     public function setSpotfileAttribute($value)
     {
-        $this->attributes['spotfile'] = implode(',', $value);
+        if (is_array($value)){
+            $this->attributes['spotfile'] = json_encode($value);
+        }
     }
 
     public function getSpotfileAttribute($value)
     {
-        return explode(',', $value);
+        return json_decode($value, true);
     }
 }
